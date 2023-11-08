@@ -2,31 +2,49 @@
   "pages": [{
     "path": "pages/home/home",
     "style": {
-      "navigationBarTitleText": "",
+      "navigationBarTitleText": "Mini-优购",
       "enablePullDownRefresh": false
     }
 
   }, {
     "path": "pages/cate/cate",
     "style": {
-      "navigationBarTitleText": "",
+      "navigationBarTitleText": "分类",
       "enablePullDownRefresh": false
     }
 
   }, {
     "path": "pages/cart/cart",
     "style": {
-      "navigationBarTitleText": "",
+      "navigationBarTitleText": "购物车",
       "enablePullDownRefresh": false
     }
 
   }, {
     "path": "pages/my/my",
     "style": {
-      "navigationBarTitleText": "",
+      "navigationBarTitleText": "我的",
       "enablePullDownRefresh": false
     }
 
+  }],
+  "subPackages": [{
+    "root": "subpkg",
+    "pages": [{
+        "path": "goods_detail/goods_detail",
+        "style": {
+          "navigationBarTitleText": "商品详情",
+          "enablePullDownRefresh": false
+        }
+      },
+      {
+        "path": "goods_list/goods_list",
+        "style": {
+          "navigationBarTitleText": "商品列表",
+          "enablePullDownRefresh": false
+        }
+      }
+    ]
   }],
   "globalStyle": {
     "navigationBarTextStyle": "white",
