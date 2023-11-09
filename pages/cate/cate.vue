@@ -1,5 +1,9 @@
 <template>
   <view>
+    <!-- 使用自定义的搜索组件 -->
+    <!-- <my-search :bgcolor="'#000000'" :radius="20"></my-search> -->
+    <my-search @click="gotoSearch"></my-search>
+
     <view class="scroll-view-container">
       <!-- 左侧的滑动区域 -->
       <scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wh + 'px'}">
@@ -46,7 +50,7 @@
     onLoad() {
       // 获取当前屏幕可使用高度
       const infoSync = uni.getSystemInfoSync()
-      this.wh = infoSync.windowHeight
+      this.wh = infoSync.windowHeight - 50 // 解决 搜索遮住高度问题 bug
 
       // 调用获取分类列表数据的方法
       this.getCateList()
@@ -78,6 +82,13 @@
       gotoGoodsList(item3) {
         uni.navigateTo({
           url: `/subpkg/goods_list/goods_list?cid=${item3.cat_id}`
+        })
+      },
+
+      // 跳转到搜索页面事件
+      gotoSearch() {
+        uni.navigateTo({
+          url: '/subpkg/search/search'
         })
       }
     }
