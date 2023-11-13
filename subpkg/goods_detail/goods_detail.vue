@@ -38,6 +38,15 @@
 </template>
 
 <script>
+  // 从 vuex 中按需导出 mapState,mapMutations,mapGetters 辅助方法
+  // import { computed } from 'vue'
+  // import { useStore } from 'vuex'
+  import {
+    mapState,
+    mapMutations,
+    mapGetters
+  } from 'vuex'
+
   export default {
     data() {
       return {
@@ -51,7 +60,7 @@
         }, {
           icon: 'cart',
           text: '购物车',
-          info: 2
+          info: 0
         }],
         buttonGroup: [{
             text: '加入购物车',
@@ -66,6 +75,37 @@
         ]
       }
     },
+    computed: {
+      // 调用 mapState 方法，把 m_cart 模块中的 cart 数组映射到当前页面中，作为计算属性来使用
+      // ...mapState('模块的名称', ['要映射的数据名称1', '要映射的数据名称2'])
+      ...mapState('m_cart', ['cart']),
+      // 把 m_cart 模块中名称为 total 的 getter 映射到当前页面中使用
+      ...mapGetters('m_cart', ['total'])
+    },
+    // 逐个注册费事
+    // setup() {
+    //   const store = useStore()
+    //   return {
+    //     // 在 computed 函数中访问 state
+    //     cart: computed(() => store.state.m_cart.cart),
+    //     // 在 computed 函数中访问 mutations
+    //     addToCart: computed(() => store.commit('m_cart/addToCart')),
+    //     在 computed 函数中访问 getter
+    //     total: computed(() => store.getters.m_cart.total)
+    //   }
+    // },
+    watch: {
+      // 监听 total 值的变化，通过第一个形参得到变化后的新值
+      total: {
+        handler(newVal) {
+          // 通过数组的 find() 方法，找到购物车按钮的配置对象
+          const findResult = this.options.find(e => e.text === '购物车')
+          // 动态为购物车按钮的 info 属性赋值
+          if (findResult) findResult.info = newVal
+        },
+        immediate: true
+      }
+    },
     onLoad(options) {
       // 获取商品 Id
       const goods_id = options.goods_id
@@ -73,6 +113,9 @@
       this.getGoodsDetail(goods_id)
     },
     methods: {
+      // 把 m_cart 模块中的 addToCart 方法映射到当前页面使用
+      ...mapMutations('m_cart', ['addToCart']),
+
       // 定义请求商品详情数据的方法
       async getGoodsDetail(goods_id) {
         const {
@@ -102,6 +145,23 @@
           uni.switchTab({
             url: '/pages/cart/cart'
           })
+        }
+      },
+      // 右侧按钮的点击事件处理函数
+      buttonClick(e) {
+        if (e.content.text === '加入购物车') {
+          // 组织一个商品的信息对象 
+          // { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
+          const goods = {
+            goods_id: this.goods_info.goods_id,
+            goods_name: this.goods_info.goods_name,
+            goods_price: this.goods_info.goods_price,
+            goods_count: 1,
+            goods_small_logo: this.goods_info.goods_small_logo,
+            goods_state: true
+          }
+          // 通过 this 调用映射过来的 addToCart 方法，把商品信息对象存储到购物车中
+          this.addToCart(goods)
         }
       }
     }
