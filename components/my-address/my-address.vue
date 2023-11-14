@@ -57,13 +57,13 @@
         // 调用小程序提供的 chooseAddress() 方法，即可使用选择收货地址的功能
         // 返回值是一个对象：errMsg为错误对象；之后为成功之后的收货地址对象
         const res = await uni.chooseAddress().catch(err => err)
-        console.log(res.errMsg);
+        // console.log(res.errMsg);
         // 用户成功的选择了收货地址
         if (res.errMsg === 'chooseAddress:ok') {
           // 调用 Store 中提供的 updateAddress 方法，将 address 保存到 Store 里面
           this.updateAddress(res)
         }
-        if (res.errMsg === 'chooseAddress:fail auth deny' || err.errMsg ===
+        if (res.errMsg === 'chooseAddress:fail auth deny' || res.errMsg ===
           'chooseAddress:fail authorize no response') {
           // 失败重新授权
           this.reAuth()

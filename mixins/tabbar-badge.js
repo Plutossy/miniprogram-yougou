@@ -17,18 +17,24 @@ export default {
     total() {
       // 调用 methods 中的 setBadge 方法，重新为 tabBar 的数字徽章赋值
       this.setBadge()
-    },
+    }
   },
   onShow() {
     this.setBadge()
   },
   methods: {
     setBadge() {
-      // 调用 uni.setTabBarBadge() 方法，为购物车设置右上角的徽标
-      uni.setTabBarBadge({
-        index: 2,
-        text: this.total + '' // 注意：text 的值必须是字符串，不能是数字
-      })
+      if (this.total > 0) {
+        // 调用 uni.setTabBarBadge() 方法，为购物车设置右上角的徽标
+        uni.setTabBarBadge({
+          index: 2,
+          text: this.total + '' // 注意：text 的值必须是字符串，不能是数字
+        })
+      } else {
+        return uni.removeTabBarBadge({
+          index: 2
+        })
+      }
     }
   }
 }

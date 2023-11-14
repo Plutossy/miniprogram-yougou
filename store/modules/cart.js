@@ -6,7 +6,7 @@ export default {
     // 购物车的数组，用来存储购物车中每个商品的信息对象
     // 每个商品的信息对象，都包含如下 6 个属性：
     // { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
-    cart: JSON.parse(uni.getStorageSync('cart') || '[]')
+    cart: JSON.parse(uni.getStorageSync('cart') || '[]'),
   },
   // 模块的 mutations 方法
   mutations: {
@@ -58,6 +58,13 @@ export default {
     // 更新所有商品的勾选状态
     updateAllGoodsState(state, newState) {
       state.cart.forEach(e => e.goods_state = newState)
+      // 持久化存储到本地
+      this.commit('m_cart/saveToStorage')
+    },
+    // 按需清空购物车
+    clearCartByState(state) {
+      // 调用数组的 filter 方法进行过滤
+      state.cart = state.cart.filter(e => !e.goods_state)
       // 持久化存储到本地
       this.commit('m_cart/saveToStorage')
     }
